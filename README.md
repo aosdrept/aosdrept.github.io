@@ -6,9 +6,9 @@ hosted at [aosdrept.github.io](https://aosdrept.github.io/).
 ## For content editors
 
 Open the [editor guide](https://aosdrept.github.io/admin/) and follow its link to
-[Pages CMS](https://app.pagescms.org/). Choose `aosdrept.github.io` on `main`, then
-**Evenimente și proiecte**. Add an entry, complete the shared details and both
-language sections, and save. Enable **Publică pe site** when it is ready.
+[Pages CMS](https://app.pagescms.org/aosdrept/aosdrept.github.io/main/collection/activities).
+In **Evenimente și proiecte**, choose **Add an entry**, complete the shared details
+and both language sections, and click **Save**. Enable **Publică pe site** when ready.
 
 The website generates the homepage announcement and the events archive from the
 same entry. No HTML, Git commands or local software are needed for routine editing.
@@ -28,7 +28,10 @@ The editor does not expose governing PDFs, legal notices or site layout as conte
 fields. Media uploads are restricted to `assets/uploads/`; that is an editor
 configuration, not a replacement for GitHub access controls.
 
-## One-time connection
+## Connection and access
+
+GitHub Actions publication and the Pages CMS connection were configured and
+verified on 13 November 2026. The following steps document setup for future maintainers:
 
 1. In repository **Settings → Pages → Build and deployment**, choose
    **GitHub Actions** as the source. The `Publish website` workflow builds and deploys `dist/`.
