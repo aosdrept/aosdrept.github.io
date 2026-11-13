@@ -1,0 +1,26 @@
+AOSD WEBSITE — COPYRIGHT AND LICENSING NOTICE
+Copyright (c) 2026 Asociația Ovidiană a Studenților la Drept (AOSD).
+
+AOSD reserves only the rights it holds in protected original material.
+Third-party rights and applicable exceptions and limitations remain unaffected.
+No exclusive rights are claimed in facts, ideas, official texts or other
+material excluded from copyright protection.
+
+No general open-source or Creative Commons licence is granted for AOSD-owned
+protected code, text, documents or visual assets in this repository.
+The viewing and forking rights provided by GitHub's terms remain applicable.
+
+Published association documents may be read, downloaded and printed for
+information and the membership process. The membership application may be
+completed, signed and submitted to AOSD under its instructions.
+
+THIRD-PARTY MATERIAL
+The Montserrat fonts in assets/fonts/ remain under the SIL Open Font License
+1.1. Their authors' notice and full licence are in assets/fonts/OFL.txt.
+That licence does not apply to the rest of this repository.
+
+Public notices:
+https://aosdrept.github.io/copyright.html
+https://aosdrept.github.io/en/copyright.html
+
+Permission requests and attribution corrections: aosdrept@gmail.com
