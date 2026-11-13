@@ -9,14 +9,18 @@
   const navigation = header.querySelector("#main-nav");
   const headerTools = header.querySelector(".header-tools");
 
+  let stickyHeight = 0;
+  let headerOffset = null;
+
   // Keep anchor targets and keyboard focus clear of the sticky desktop header.
   function updateHeaderOffset() {
     const isSticky = window.getComputedStyle(header).position === "sticky";
-    const offset = isSticky ? header.getBoundingClientRect().height + 16 : 16;
-    document.documentElement.style.setProperty(
-      "--header-offset",
-      `${offset}px`,
-    );
+    stickyHeight = isSticky ? header.getBoundingClientRect().height : 0;
+    const offset = stickyHeight + 16;
+    if (offset !== headerOffset) {
+      document.documentElement.style.setProperty("--header-offset", `${offset}px`);
+      headerOffset = offset;
+    }
   }
 
   updateHeaderOffset();
@@ -93,12 +97,10 @@
       document.getElementById(link.hash.slice(1)),
     );
     let scrollUpdatePending = false;
+    let currentSection = null;
 
     function updateActiveSection() {
-      const stickyHeight =
-        window.getComputedStyle(header).position === "sticky"
-          ? header.getBoundingClientRect().height
-          : 0;
+      scrollUpdatePending = false;
       let activeSection = null;
       sections.forEach((section) => {
         if (
@@ -108,14 +110,17 @@
           activeSection = section.id;
         }
       });
+      // Scrolling within a section needs no DOM changes. Header dimensions are
+      // refreshed by resize events, not repeatedly measured during scrolling.
+      if (activeSection === currentSection) return;
+      currentSection = activeSection;
       links.forEach((link) => {
         if (link.hash === `#${activeSection}`) {
           link.setAttribute("aria-current", "location");
-        } else {
+        } else if (link.hasAttribute("aria-current")) {
           link.removeAttribute("aria-current");
         }
       });
-      scrollUpdatePending = false;
     }
 
     window.addEventListener(

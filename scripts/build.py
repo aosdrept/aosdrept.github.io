@@ -297,7 +297,7 @@ def event_html(entry, lang):
         caption = photo.get("caption_" + lang, "")
         credit = photo.get("credit", "")
         caption = " · ".join(part for part in (caption, credit) if part)
-        photos.append(f'<figure><img src="{text(photo["image"])}" alt="{text(photo["alt_" + lang])}" loading="lazy">' + (f'<figcaption>{text(caption)}</figcaption>' if caption else "") + "</figure>")
+        photos.append(f'<figure><img src="{text(photo["image"])}" alt="{text(photo["alt_" + lang])}" loading="lazy" decoding="async">' + (f'<figcaption>{text(caption)}</figcaption>' if caption else "") + "</figure>")
     photos_html = '<div class="event-photos">' + "".join(photos) + "</div>" if photos else ""
     links = []
     # Preserve past registration links as references without advertising registration after cancellation.

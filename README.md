@@ -112,6 +112,14 @@ copies. Shared section IDs preserve the current section when switching languages
 The navigation breakpoint is `70rem` in both CSS and JS. Preserve visible focus,
 usable touch targets, the skip link, reduced-motion support and no-JS navigation.
 
+Keep navigation work event-driven: measure the header when its layout changes,
+and update `aria-current` only when the active section changes. Do not add polling
+or a permanent animation loop. Below-fold collaborator and activity images use
+native lazy loading and asynchronous decoding; PDFs are ordinary download links.
+Keep uploaded photographs small (ideally under 2 MB), since uploads are validated
+but are not automatically resized or recompressed. The larger logo source files
+preserve the supplied artwork; smaller display variants remain a future option.
+
 ## Security maintenance
 
 Every HTML page sets a Content Security Policy and a `no-referrer` policy.
