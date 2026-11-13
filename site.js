@@ -1,71 +1,146 @@
-/* Progressive enhancement: both languages and all content work without JS. */
+/* Optional enhancements. All content and links remain available without JS. */
 (() => {
-  const header = document.querySelector('.site-header');
-  const menu = document.querySelector('.menu-toggle');
-  const nav = document.querySelector('#main-nav');
-  const mobile = window.matchMedia('(max-width: 760px)');
+  const header = document.querySelector(".site-header");
+  if (!header) return;
 
-  function setMenu(open) {
-    menu.setAttribute('aria-expanded', String(open));
-    menu.setAttribute('aria-label', open ? menu.dataset.closeLabel : menu.dataset.openLabel);
-    header.classList.toggle('menu-open', open);
-    nav.hidden = mobile.matches && !open;
+  // Match the navigation breakpoint in style.css.
+  const compactLayout = window.matchMedia("(max-width: 70rem)");
+  const menuButton = header.querySelector(".menu-toggle");
+  const navigation = header.querySelector("#main-nav");
+  const headerTools = header.querySelector(".header-tools");
+
+  // Keep anchor targets and keyboard focus clear of the sticky desktop header.
+  function updateHeaderOffset() {
+    const isSticky = window.getComputedStyle(header).position === "sticky";
+    const offset = isSticky ? header.getBoundingClientRect().height + 16 : 16;
+    document.documentElement.style.setProperty(
+      "--header-offset",
+      `${offset}px`,
+    );
   }
-  menu.hidden = false;
-  header.classList.add('enhanced');
-  setMenu(false);
-  menu.addEventListener('click', () => setMenu(menu.getAttribute('aria-expanded') !== 'true'));
-  nav.addEventListener('click', (event) => {
-    if (event.target.closest('a') && mobile.matches) {
-      const target = document.querySelector(event.target.closest('a').hash);
+
+  updateHeaderOffset();
+  window.addEventListener("resize", updateHeaderOffset);
+  if ("ResizeObserver" in window) {
+    new ResizeObserver(updateHeaderOffset).observe(header);
+  }
+
+  // Disclosure navigation: the toggle keeps focus; Tab reaches the open links.
+  if (menuButton && navigation && headerTools) {
+    function setMenu(open) {
+      const expanded = compactLayout.matches && open;
+      menuButton.setAttribute("aria-expanded", String(expanded));
+      menuButton.setAttribute(
+        "aria-label",
+        expanded ? menuButton.dataset.closeLabel : menuButton.dataset.openLabel,
+      );
+      navigation.hidden = compactLayout.matches && !expanded;
+    }
+
+    function updateNavigationLayout() {
+      const focusedElement = document.activeElement;
+
+      // Match DOM/tab order to the visible layout at each breakpoint.
+      if (compactLayout.matches) {
+        header.append(navigation);
+      } else {
+        header.insertBefore(navigation, headerTools);
+      }
+
+      menuButton.hidden = !compactLayout.matches;
+      setMenu(false);
+      if (compactLayout.matches && navigation.contains(focusedElement)) {
+        menuButton.focus({ preventScroll: true });
+      } else if (!compactLayout.matches && focusedElement === menuButton) {
+        navigation.querySelector("a").focus({ preventScroll: true });
+      } else if (navigation.contains(focusedElement)) {
+        // Reparenting a focused link can reset focus in some browsers.
+        focusedElement.focus({ preventScroll: true });
+      }
+      updateHeaderOffset();
+    }
+
+    updateNavigationLayout();
+    compactLayout.addEventListener("change", updateNavigationLayout);
+    menuButton.addEventListener("click", () => {
+      setMenu(menuButton.getAttribute("aria-expanded") !== "true");
+    });
+
+    navigation.addEventListener("click", (event) => {
+      const link = event.target.closest("a");
+      if (!link || !compactLayout.matches) return;
+      const target = document.getElementById(link.hash.slice(1));
       setMenu(false);
       if (target) {
-        target.setAttribute('tabindex', '-1');
+        target.setAttribute("tabindex", "-1");
         target.focus({ preventScroll: true });
       }
-    }
-  });
-  document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape' && menu.getAttribute('aria-expanded') === 'true') {
-      setMenu(false);
-      menu.focus();
-    }
-  });
-  mobile.addEventListener('change', () => setMenu(false));
+    });
 
-  // Keep the same section when moving between the two language URLs.
-  const languageLinks = document.querySelectorAll('.language-switch a');
-  const updateLanguageLinks = () => {
+    header.addEventListener("keydown", (event) => {
+      if (
+        event.key === "Escape" &&
+        menuButton.getAttribute("aria-expanded") === "true"
+      ) {
+        setMenu(false);
+        menuButton.focus();
+      }
+    });
+
+    // Mark the section being read. No history entries or scroll interception.
+    const links = [...navigation.querySelectorAll("a")];
+    const sections = links.map((link) =>
+      document.getElementById(link.hash.slice(1)),
+    );
+    let scrollUpdatePending = false;
+
+    function updateActiveSection() {
+      const stickyHeight =
+        window.getComputedStyle(header).position === "sticky"
+          ? header.getBoundingClientRect().height
+          : 0;
+      let activeSection = null;
+      sections.forEach((section) => {
+        if (
+          section &&
+          section.getBoundingClientRect().top <= stickyHeight + 100
+        ) {
+          activeSection = section.id;
+        }
+      });
+      links.forEach((link) => {
+        if (link.hash === `#${activeSection}`) {
+          link.setAttribute("aria-current", "location");
+        } else {
+          link.removeAttribute("aria-current");
+        }
+      });
+      scrollUpdatePending = false;
+    }
+
+    window.addEventListener(
+      "scroll",
+      () => {
+        if (!scrollUpdatePending) {
+          scrollUpdatePending = true;
+          window.requestAnimationFrame(updateActiveSection);
+        }
+      },
+      { passive: true },
+    );
+    window.addEventListener("resize", updateActiveSection);
+    updateActiveSection();
+  }
+
+  // Equivalent sections share IDs in both languages, including legal pages.
+  const languageLinks = header.querySelectorAll(".language-switch a");
+  function updateLanguageLinks() {
     languageLinks.forEach((link) => {
       const url = new URL(link.href);
-      url.hash = location.hash;
+      url.hash = window.location.hash;
       link.href = url.href;
     });
-  };
+  }
   updateLanguageLinks();
-  window.addEventListener('hashchange', updateLanguageLinks);
-
-  // Highlight the section currently being read without altering browser history.
-  const links = [...nav.querySelectorAll('a')];
-  const sections = links.map(link => document.querySelector(link.hash));
-  let queued = false;
-  const updateActiveLink = () => {
-    const offset = header.offsetHeight + 100;
-    let active = null;
-    sections.forEach(section => {
-      if (section.getBoundingClientRect().top <= offset) active = section.id;
-    });
-    links.forEach(link => {
-      if (link.hash === '#' + active) link.setAttribute('aria-current', 'location');
-      else link.removeAttribute('aria-current');
-    });
-    queued = false;
-  };
-  window.addEventListener('scroll', () => {
-    if (!queued) {
-      queued = true;
-      window.requestAnimationFrame(updateActiveLink);
-    }
-  }, { passive: true });
-  updateActiveLink();
+  window.addEventListener("hashchange", updateLanguageLinks);
 })();
