@@ -1,0 +1,32 @@
+{
+  "visible": true,
+  "featured": true,
+  "kind": "event",
+  "status": "announced",
+  "published_date": "2026-11-05",
+  "date": "2026-12-08",
+  "end_date": "",
+  "registration_deadline": "2026-11-14T23:59",
+  "registration_url": "https://forms.cloud.microsoft/e/T8sPnFnCZa",
+  "source_url": "https://www.facebook.com/dreptovidius/posts/pfbid027pzTpmPhsAjPuRNTFNeJ5vu3b6CFwHbcFwSCaLP6VYhyJbUHt142dBAjxJiK1ho7l",
+  "deadlines": [
+    {
+      "label_ro": "Soluționarea speței",
+      "label_en": "Case solution deadline",
+      "date": "2026-11-21T23:59"
+    }
+  ],
+  "photos": [],
+  "ro": {
+    "title": "Proces simulat de drept civil",
+    "summary": "Studenții din anii III și IV pot participa în echipe de câte doi. O ocazie de a aplica noțiunile de drept civil și de a exersa argumentarea juridică.",
+    "location": "",
+    "body": "<p>Un exercițiu practic de drept civil, organizat de Facultatea de Drept și Științe Administrative a Universității „Ovidius”, cu participarea AOSD, în cadrul Săptămânii profesiilor juridice.</p><h4>Cine poate participa</h4><p>Studenți din anii III și IV, în echipe de câte două persoane.</p><p>După încheierea înscrierilor, echipele primesc speța pe care trebuie să o soluționeze până la termenul indicat.</p><h4>Informații practice</h4><p>Data de 8 decembrie este indicată în formularul de înscriere. Activitatea face parte din Săptămâna profesiilor juridice (7–11 decembrie 2026). Ora și locul nu sunt precizate în anunțul consultat.</p><p>Formularul de înscriere este în limba română și este găzduit pe Microsoft Forms. Informații verificate la 13 noiembrie 2026, pe baza anunțului și a formularului organizatorului.</p>"
+  },
+  "en": {
+    "title": "Civil law moot court",
+    "summary": "Third- and fourth-year students can take part in teams of two. An opportunity to apply civil law knowledge and practise legal argument.",
+    "location": "",
+    "body": "<p>A practical civil law exercise organised by the Faculty of Law and Administrative Sciences at Ovidius University, with AOSD’s participation, as part of Legal Professions Week.</p><h4>Who can take part</h4><p>Third- and fourth-year students, in teams of two.</p><p>After registration closes, teams will receive the case they need to solve by the stated deadline.</p><h4>Practical information</h4><p>The registration form specifies 8 December. The activity is part of Legal Professions Week (7–11 December 2026). The announcement reviewed does not specify a time or venue.</p><p>The registration form is in Romanian and hosted on Microsoft Forms. Information checked on 13 November 2026 against the organiser’s announcement and registration form.</p>"
+  }
+}

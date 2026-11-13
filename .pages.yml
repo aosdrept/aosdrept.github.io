@@ -1,0 +1,215 @@
+# Pages CMS: edit approved public content without editing HTML.
+media:
+  - name: activity_images
+    label: Fotografii pentru activități
+    input: assets/uploads
+    output: /assets/uploads
+    extensions: [jpg, jpeg, png, webp]
+    rename: safe
+
+content:
+  - name: activities
+    label: Evenimente și proiecte
+    type: collection
+    path: content/activities
+    format: json
+    filename:
+      template: "{primary}.json"
+      field: false
+    operations:
+      create: true
+      rename: false
+      delete: false
+    view:
+      primary: ro.title
+      fields: [ro.title, kind, date, status, visible]
+      sort: [date, published_date, ro.title]
+      search: [ro.title, en.title]
+      default:
+        sort: date
+        order: desc
+    fields:
+      - name: visible
+        label: Publică pe site
+        type: boolean
+        default: false
+        description: "Activează după verificarea ambelor limbi. Atenție: fișierele salvate sunt publice în GitHub chiar dacă această opțiune este oprită. Nu salva date private sau materiale confidențiale."
+      - name: featured
+        label: Evidențiază pe prima pagină
+        type: boolean
+        default: false
+        description: "Dacă sunt selectate mai multe activități, apare cea cu cea mai recentă dată a anunțului. Dacă nu este selectată niciuna, apare ultimul anunț publicat."
+      - name: kind
+        label: Tipul activității
+        type: select
+        default: event
+        required: true
+        options:
+          values:
+            - name: event
+              label: Eveniment
+            - name: project
+              label: Proiect
+      - name: status
+        label: Stadiu
+        type: select
+        default: announced
+        required: true
+        description: Marchează Încheiat numai după confirmarea desfășurării. Data trecută nu schimbă automat stadiul.
+        options:
+          values:
+            - name: announced
+              label: Anunțat
+            - name: ongoing
+              label: În desfășurare
+            - name: completed
+              label: Încheiat
+            - name: cancelled
+              label: Anulat
+      - name: published_date
+        label: Data anunțului
+        type: date
+        required: true
+        options:
+          format: yyyy-MM-dd
+      - name: date
+        label: Data activității sau începutului proiectului
+        type: date
+        default: ""
+        description: Lasă necompletat dacă data nu este confirmată.
+        options:
+          format: yyyy-MM-dd
+      - name: end_date
+        label: Data de sfârșit (opțional)
+        type: date
+        default: ""
+        options:
+          format: yyyy-MM-dd
+      - name: registration_deadline
+        label: Termen de înscriere (opțional, ora României)
+        type: date
+        default: ""
+        options:
+          time: true
+          format: yyyy-MM-dd'T'HH:mm
+      - name: registration_url
+        label: Link de înscriere (opțional)
+        type: string
+        pattern:
+          regex: '^https://[^\s]+$'
+          message: Folosește un link complet care începe cu https://.
+      - name: source_url
+        label: Link către anunțul original (opțional)
+        type: string
+        pattern:
+          regex: '^https://[^\s]+$'
+          message: Folosește un link complet care începe cu https://.
+      - name: deadlines
+        label: Alte termene (opțional)
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{label_ro}"
+        fields:
+          - name: label_ro
+            label: Denumire în română
+            type: string
+            required: true
+          - name: label_en
+            label: Denumire în engleză
+            type: string
+            required: true
+          - name: date
+            label: Data și ora (ora României)
+            type: date
+            required: true
+            options:
+              time: true
+              format: yyyy-MM-dd'T'HH:mm
+      - name: ro
+        label: Română
+        type: object
+        required: true
+        fields:
+          - name: title
+            label: Titlu
+            type: string
+            required: true
+          - name: summary
+            label: Rezumat scurt
+            type: text
+            required: true
+            description: Două sau trei propoziții. Apare și în anunțul de pe prima pagină.
+          - name: location
+            label: Locul desfășurării (opțional)
+            type: string
+            description: Completează numai dacă este confirmat.
+          - name: body
+            label: Descriere completă
+            type: rich-text
+            required: true
+            description: "Include organizatorul, cui se adresează, condițiile de participare și informațiile practice. Adaugă fotografiile în secțiunea dedicată de mai jos."
+            options:
+              format: html
+              switcher: false
+              media: false
+      - name: en
+        label: English
+        type: object
+        required: true
+        fields:
+          - name: title
+            label: Title
+            type: string
+            required: true
+          - name: summary
+            label: Short summary
+            type: text
+            required: true
+            description: Two or three sentences. Also used in the homepage announcement.
+          - name: location
+            label: Location (optional)
+            type: string
+          - name: body
+            label: Full description
+            type: rich-text
+            required: true
+            options:
+              format: html
+              switcher: false
+              media: false
+      - name: photos
+        label: Fotografii (opțional)
+        description: "Încarcă numai imagini aprobate pentru publicare, fără date private sau semnături. Recomandat: maximum 2 MB pe fotografie."
+        type: object
+        list:
+          max: 6
+          collapsible:
+            collapsed: true
+            summary: "{alt_ro}"
+        fields:
+          - name: image
+            label: Fotografie
+            type: image
+            required: true
+            options:
+              media: activity_images
+          - name: alt_ro
+            label: Descriere pentru accesibilitate (română)
+            type: string
+            required: true
+            description: Descrie pe scurt ce este relevant în imagine.
+          - name: alt_en
+            label: Accessibility description (English)
+            type: string
+            required: true
+          - name: caption_ro
+            label: Legendă vizibilă (română, opțional)
+            type: string
+          - name: caption_en
+            label: Visible caption (English, optional)
+            type: string
+          - name: credit
+            label: Credit foto (opțional)
+            type: string

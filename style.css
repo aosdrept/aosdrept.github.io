@@ -930,13 +930,17 @@ details p {
   margin-bottom: 1rem;
 }
 .collaborator {
+  display: grid;
+  grid-template-columns: 7.5rem minmax(0, 1fr);
+  align-items: center;
+  gap: 1.5rem;
   border-left: 2px solid #a58bbd;
   padding-left: 2rem;
 }
 .collaborator h3 {
   font-size: 1.5rem;
 }
-.collaborator > p {
+.collaborator-details > p {
   color: var(--muted);
 }
 .events-page {
@@ -998,12 +1002,6 @@ details p {
   max-width: 52rem;
   font-size: 1.125rem;
 }
-.event-details {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 2rem;
-  padding: 1.5rem 0;
-}
 .event-entry h4 {
   font-size: 1.125rem;
   margin: 0 0 1rem;
@@ -1039,6 +1037,71 @@ details p {
   padding-top: 1.5rem;
   margin: 1.5rem 0 0;
   border-top: 1px solid var(--line);
+}
+
+/* Official collaborator identity and CMS-generated activity content. */
+.collaborator-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem;
+  background: var(--ink);
+  border-radius: 4px;
+}
+.collaborator-logo img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.event-entry + .event-entry {
+  margin-top: 2rem;
+}
+.event-facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  gap: 1.25rem 2rem;
+  padding: 1.5rem 0;
+}
+.event-facts > div + div {
+  margin: 0;
+}
+.event-body h4 {
+  margin-top: 1.75rem;
+}
+.event-body table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+}
+.event-body th,
+.event-body td {
+  padding: 0.5rem;
+  border: 1px solid var(--line);
+}
+.event-body pre {
+  white-space: pre-wrap;
+}
+.event-photos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+.event-photos figure {
+  margin: 0;
+}
+.event-photos img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+.event-photos figcaption {
+  margin-top: 0.5rem;
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+.editor-steps li {
+  margin-bottom: 1.25rem;
 }
 
 /* Compact navigation: always readable, with no overlay or focus trap. */
@@ -1100,16 +1163,18 @@ details p {
 /* Reflow at phone widths and when the browser is zoomed. */
 @media (max-width: 47.5rem) {
   .news-grid,
-  .collaborations,
-  .event-details {
+  .collaborations {
     grid-template-columns: 1fr;
   }
-  .collaborations,
-  .event-details {
+  .collaborations {
     gap: 1.5rem;
   }
   .collaborator {
+    grid-template-columns: 1fr;
     padding-left: 1.25rem;
+  }
+  .collaborator-logo {
+    width: 7.5rem;
   }
   .events-page {
     padding-top: 1.5625rem;

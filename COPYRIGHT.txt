@@ -19,6 +19,11 @@ The Montserrat fonts in assets/fonts/ remain under the SIL Open Font License
 1.1. Their authors' notice and full licence are in assets/fonts/OFL.txt.
 That licence does not apply to the rest of this repository.
 
+The FDSA logo in assets/fdsa-logo.webp is sourced from the faculty website:
+https://drept.univ-ovidius.ro/wp-content/uploads/2026/08/Logo-White-png.webp
+It identifies the faculty in the Collaborations section. Its rights remain
+with its owner; AOSD does not grant a reuse licence for this third-party logo.
+
 Public notices:
 https://aosdrept.github.io/copyright.html
 https://aosdrept.github.io/en/copyright.html
