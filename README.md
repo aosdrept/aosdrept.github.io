@@ -7,6 +7,7 @@ Hosted on [GitHub Pages](https://aosdrept.github.io/), from the `main` branch an
 
 - `index.html`: Romanian homepage.
 - `en/index.html`: English homepage.
+- `evenimente.html`, `en/evenimente.html`: bilingual events and projects record.
 - `privacy.html`, `copyright.html`: Romanian visitor and rights notices.
 - `en/privacy.html`, `en/copyright.html`: matching English notices.
 - `style.css`: shared styles, grouped by component, followed by responsive rules.
@@ -37,8 +38,29 @@ The current layout has been checked at 320px and with enlarged text; this is not
 a claim of full WCAG conformance or a screen-reader audit.
 
 Keep a single stylesheet and script. When either changes, update its `?v=` cache
-version in all six HTML files; do not add numbered copies of the assets. Their
+version in all HTML pages; do not add numbered copies of the assets. Their
 history remains available in Git.
+
+## Announcements, events and collaborators
+
+The homepage’s `#noutati` section features one dated announcement and links to
+`evenimente.html`. Each event has a stable anchor, an explicit status, dates,
+participation details and links to its public sources. Keep the summary and
+full record consistent in both languages. Record when the information was checked.
+Use absolute deadlines rather than an undated “registration open” label.
+
+When a new announcement is featured, keep earlier event records on the events
+page in reverse chronological order, grouped by year. Update changes or
+cancellations from the organiser’s public communications. Do not mark an event
+completed just because its date has passed; add a report or selected photographs
+only once verified and cleared for publication. Do not add invented entries,
+private minutes, participant lists or unapproved images to fill the archive.
+
+The homepage’s `#colaborari` section currently names FDSA only, in the context of
+the announced moot court. Keep institution names and roles accurate; do not imply
+a general endorsement or add collaborators without association approval.
+Registration links lead to external organiser forms; there is no embedded form
+or submission handling in this repository.
 
 ## Preview and release
 
