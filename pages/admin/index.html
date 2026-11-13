@@ -57,10 +57,11 @@
       <div class="legal-intro">
         <a class="legal-back" href="../">Înapoi la site</a>
         <p class="eyebrow">PENTRU ECHIPA AOSD</p>
-        <h1>Publică un eveniment sau un proiect</h1>
+        <h1>Pregătește, verifică, publică</h1>
         <p class="legal-lead">
-          Completezi o singură fișă pentru ambele limbi. Site-ul actualizează
-          automat anunțul de pe prima pagină și arhiva activităților.
+          Membrii pregătesc evenimentele și proiectele în editor.
+          Administratorul verifică versiunea propusă și aprobă publicarea.
+          Site-ul rămâne neschimbat până la aprobare.
         </p>
         <a
           class="button dark"
@@ -70,70 +71,132 @@
       </div>
       <div class="legal-content">
         <section id="pasi">
-          <h2>Cum publici</h2>
+          <h2>Pentru editori</h2>
           <ol class="editor-steps">
             <li>
-              <strong>Deschide colecția „Evenimente și proiecte”.</strong> În
-              editor, alege „Add an entry” pentru o activitate nouă sau deschide
-              una existentă pentru modificare.
+              <strong>Deschide „Evenimente și proiecte”.</strong> Alege „Add an
+              entry” sau deschide o activitate existentă. Membrii invitați se
+              conectează prin e-mail; nu au nevoie de cont GitHub.
             </li>
             <li>
-              <strong>Completează informațiile comune.</strong> Alege tipul și
-              stadiul activității, data anunțului și, dacă sunt confirmate, data
-              activității, termenele și linkul de înscriere. Orele se introduc
-              în ora României.
+              <strong>Pregătește conținutul.</strong> Pentru o activitate nouă,
+              poți salva o ciornă cu titlul în română și „Include în versiunea
+              propusă” dezactivat. Completează treptat textele Română și
+              English, datele, linkurile și fotografiile. Orele se introduc în
+              ora României.
             </li>
             <li>
-              <strong>Completează secțiunile Română și English.</strong> Adaugă
-              titlul, rezumatul și descrierea completă. Pentru fiecare
-              fotografie, scrie o scurtă descriere în ambele limbi, pentru
-              accesibilitate.
+              <strong>Propune activitatea pentru publicare.</strong> Completează
+              ambele limbi, activează „Include în versiunea propusă” și apasă
+              „Save”. „Evidențiază pe prima pagină” propune anunțul principal;
+              dintre mai multe selecții, este folosită cea cu data anunțului cea
+              mai recentă.
             </li>
             <li>
-              <strong>Verifică și salvează cu „Save”.</strong> Activează
-              „Publică pe site” când informațiile sunt pregătite. „Evidențiază
-              pe prima pagină” selectează anunțul principal. Dacă sunt selectate
-              mai multe, apare cel cu cea mai recentă dată a anunțului.
-            </li>
-            <li>
-              <strong>Verifică rezultatul.</strong> Așteaptă publicarea
-              automată, apoi deschide site-ul în ambele limbi. Dacă actualizarea
-              nu apare, verifică starea publicării de mai jos.
+              <strong>Urmărește verificarea.</strong> Salvarea declanșează
+              verificările automate și pregătește o versiune pentru
+              administrator. Corectează eventualele erori și salvează din nou. O
+              salvare nouă înlocuiește o verificare în așteptare.
             </li>
           </ol>
+          <p>
+            Modificările unei activități deja publicate necesită tot aprobare.
+            Dezactivarea „Include în versiunea propusă” o retrage de pe site la
+            următoarea publicare aprobată; nu este un mod de a păstra pe site
+            versiunea veche a acelei activități.
+          </p>
           <a
             class="text-link"
             href="https://github.com/aosdrept/aosdrept.github.io/actions/workflows/publish.yml"
-            >Starea publicării</a
+            >Verificări și versiuni în așteptare</a
           >
         </section>
-        <section id="verificare">
-          <h2>Înainte de salvare</h2>
+        <section id="aprobare">
+          <h2>Pentru administrator</h2>
+          <ol class="editor-steps">
+            <li>
+              <strong
+                >Deschide cea mai recentă rulare „Publish website”.</strong
+              >
+              Conectează-te în GitHub cu contul desemnat pentru aprobare.
+              Inițial, acesta este aosdrept.
+            </li>
+            <li>
+              <strong>Citește raportul „Publication review”.</strong> Rezumatul
+              arată modificările față de ultima versiune publicată, textele RO
+              și EN ale activităților modificate și atenționările privind
+              datele. Verifică și linkul către toate modificările, inclusiv
+              imaginile și retragerile.
+            </li>
+            <li>
+              <strong>Verifică întregul lot.</strong> Aprobarea privește
+              întreaga versiune a site-ului, nu o singură activitate. Confirmă
+              informațiile, traducerile, acordul organizatorilor, drepturile
+              asupra imaginilor și absența datelor private.
+            </li>
+            <li>
+              <strong>Aprobă sau respinge.</strong> Alege „Review deployments”,
+              selectează „github-pages”, apoi „Approve and deploy” sau „Reject”.
+              La respingere, comunică editorului corecturile necesare. O salvare
+              ulterioară cere o nouă verificare.
+            </li>
+            <li>
+              <strong>Verifică rezultatul publicat.</strong> După finalizarea
+              publicării, deschide site-ul în ambele limbi. Dacă există erori
+              sau publicarea este respinsă, versiunea anterioară rămâne
+              disponibilă.
+            </li>
+          </ol>
+        </section>
+        <section id="automatizare">
+          <h2>Ce se face automat</h2>
           <p>
-            Salvează numai conținut aprobat pentru publicare. Fișierele și
-            fotografiile salvate sunt publice în GitHub, inclusiv când „Publică
-            pe site” este dezactivat. Nu încărca semnături, date private, dosare
-            de candidatură sau documente interne.
+            La fiecare salvare, sistemul verifică informațiile obligatorii
+            pentru activitățile propuse, formatele și ordinea datelor, textele
+            alternative ale fotografiilor, linkurile interne și formatarea
+            sigură. Pregătește raportul de verificare și semnalează termenele
+            trecute. Aprobarea este legată de versiunea verificată; o versiune
+            depășită nu poate fi publicată.
           </p>
           <p>
-            Un stadiu „Încheiat” se alege după confirmarea desfășurării
-            activității. Pentru anulări sau modificări, actualizează ambele
-            limbi. Opțiunea „Publică pe site” poate ascunde o activitate fără a
-            șterge înregistrarea.
+            După aprobare, site-ul generează ambele limbi, anunțul de pe prima
+            pagină și calendarul și arhiva, ordonate după dată și grupate pe
+            ani. Doar fotografiile folosite de activitățile incluse ajung pe
+            site.
+          </p>
+          <h2>Ce verifică oamenii</h2>
+          <p>
+            Editorii și administratorul confirmă informațiile, calitatea
+            traducerilor și descrierilor imaginilor, destinația și condițiile
+            formularelor, permisiunile pentru fotografii și stadiul real al
+            activității. Verificările tehnice nu confirmă aceste aspecte.
+          </p>
+          <p>
+            După desfășurare, marchează activitatea „Încheiat”. Pentru anulări,
+            selectează „Anulat” și explică modificarea în ambele limbi. Trecerea
+            datei nu schimbă automat stadiul și nu închide formularul extern.
+            Data anunțului nu programează publicarea. Atenționările sunt
+            generate la verificare, fără mesaje zilnice sau publicare automată
+            pe rețelele sociale.
+          </p>
+        </section>
+        <section id="verificare">
+          <h2>Ciornele nu sunt confidențiale</h2>
+          <p>
+            Fișierele și fotografiile salvate sunt publice în GitHub chiar
+            înainte de aprobare și chiar dacă „Include în versiunea propusă”
+            este dezactivat. Nu salva semnături, date private, dosare de
+            candidatură sau documente interne. Ciorna controlează includerea în
+            site; aprobarea controlează publicarea versiunii.
           </p>
         </section>
         <section id="ajutor">
           <h2>Acces și ajutor</h2>
           <p>
-            Editorul este un serviciu extern, separat de site-ul public.
-            Administratorul asociației gestionează accesul și poate invita
-            editorii. Dacă nu vezi site-ul în contul tău, cere acces echipei
-            AOSD.
-          </p>
-          <p>
-            Dacă o verificare oprește publicarea, versiunea publicată anterior
-            rămâne disponibilă. Corectează câmpul indicat în mesajul de eroare
-            și salvează din nou.
+            Administratorul invită editorii prin e-mail din secțiunea
+            „Collaborators” a Pages CMS. Numai persoanele desemnate în regulile
+            de aprobare GitHub pot aproba publicarea. Editorii nu primesc parola
+            contului asociației.
           </p>
           <p><a href="mailto:aosdrept@gmail.com">aosdrept@gmail.com</a></p>
         </section>

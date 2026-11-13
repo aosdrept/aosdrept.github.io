@@ -5,48 +5,70 @@ hosted at [aosdrept.github.io](https://aosdrept.github.io/).
 
 ## For content editors
 
-Open the [editor guide](https://aosdrept.github.io/admin/) and follow its link to
-[Pages CMS](https://app.pagescms.org/aosdrept/aosdrept.github.io/main/collection/activities).
-In **Evenimente și proiecte**, choose **Add an entry**, complete the shared details
-and both language sections, and click **Save**. Enable **Publică pe site** when ready.
+Use the [Romanian guide](https://aosdrept.github.io/admin/) or
+[English guide](https://aosdrept.github.io/en/admin/) and the
+[Pages CMS editor](https://app.pagescms.org/aosdrept/aosdrept.github.io/main/collection/activities).
+Invited members can sign in by email without a GitHub account.
 
-The website generates the homepage announcement and the events archive from the
-same entry. No HTML, Git commands or local software are needed for routine editing.
+Choose **Add an entry** in **Evenimente și proiecte**. A new draft needs a Romanian
+title; leave **Include în versiunea propusă** off until both languages are ready.
+Then enable it and click **Save**. That prepares a release for review; it does not
+publish it. Existing content changes also require approval. Switching the inclusion
+option off removes an activity in the next approved release; it does not retain
+an older version of that individual activity in that release.
+
 Dates and links are shared. Romanian and English text must be supplied and reviewed.
 The newest featured announcement appears on the homepage; if none is selected,
-the most recently published entry is used. Entries are grouped by year in the archive.
+the most recently published entry is used. The archive groups entries by year.
+Technical checks and generation are automatic; publication needs approval.
 
-All saved files and uploads are public in the GitHub repository, even with
-**Publică pe site** switched off. That switch controls website visibility only.
-Never save private drafts, personal data, signatures or unapproved photographs.
-Mark an activity completed only after verification; passing its date does not
-change its status automatically. For cancellation, select **Anulat** and explain
-in both languages. Hiding an entry preserves its file and stable link for reuse.
-Renaming and deletion are disabled in the activity editor to avoid accidental loss.
+Saved files and uploads are public on GitHub even before approval and even with
+inclusion switched off. Never save private drafts, signatures, personal records
+or unapproved photographs. Unused uploads are excluded from the deployed website.
+Mark an activity completed only after confirmation; passing its date does not
+change its status or close an external registration form. Dates do not schedule
+publication. No automatic translation, daily reminder or social posting is configured.
 
-The editor does not expose governing PDFs, legal notices or site layout as content
-fields. Media uploads are restricted to `assets/uploads/`; that is an editor
-configuration, not a replacement for GitHub access controls.
+## Administrator review
 
-## Connection and access
+1. Open the latest [Publish website run](https://github.com/aosdrept/aosdrept.github.io/actions/workflows/publish.yml).
+2. Read **Publication review** in its summary. It compares the candidate with the
+   last successful live deployment, including all intervening saves. Review the
+   linked diff, both languages, photographs, withdrawals and date warnings.
+3. Confirm the facts, translations, organiser agreement, image rights and absence
+   of private data. Approval covers the **whole website version**, not one entry.
+4. Select **Review deployments → github-pages → Approve and deploy**, or **Reject**.
+5. After successful deployment, check the public website in both languages.
 
-GitHub Actions publication and the Pages CMS connection were configured and
-verified on 13 November 2026. The following steps document setup for future maintainers:
+A newer save cancels a pending release and needs fresh review. The deployment also
+checks that its commit is still the head of main before publishing. Rejection or
+failed checks leave the last successful deployment online. A future announcement
+date produces a warning, not scheduled publication. Date warnings run on saves or
+manual workflow runs; they do not send messages or decide an event's outcome.
 
-1. In repository **Settings → Pages → Build and deployment**, choose
-   **GitHub Actions** as the source. The `Publish website` workflow builds and deploys `dist/`.
-2. Sign into [Pages CMS](https://app.pagescms.org/) with the account that owns the
-   repository. Install its GitHub App for **only `aosdrept.github.io`**.
-3. Open the repository's `main` branch. `.pages.yml` defines the bilingual editor.
-4. Invite approved editors through Pages CMS if needed. Invitations and access
-   changes require the association owner's decision; no invitations are sent by this setup.
-5. Open the existing event, verify that both language sections and dates load,
-   and check the live site after a save. A failed build leaves the last successful
-   deployment online; correct the field identified in the workflow's error message.
+## Approval and access configuration
 
-Connection documentation: [Pages CMS quick start](https://pagescms.org/docs/quick-start/),
-[collaborators](https://pagescms.org/docs/configuration/collaborators/),
-[GitHub Pages publishing source](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site).
+The approval gate is a GitHub setting, **not** an editable CMS boolean:
+
+- **Settings → Pages → Build and deployment:** source **GitHub Actions**.
+- **Settings → Environments → github-pages:** required reviewer **aosdrept**;
+  administrator bypass disabled; deployment branch restricted to **main**.
+- Self-review prevention stays off while aosdrept is the sole reviewer, allowing
+  that administrator to review their own maintenance releases. Members cannot
+  approve through their email-only CMS account. Use individual GitHub accounts
+  when designating additional administrators; do not share the owner's password.
+- Pages CMS GitHub App is connected to this repository. Its **Collaborators** page
+  manages member invitations. No extra invitations are sent by this setup.
+
+Keep the environment rule enabled. Copying the repository files to another
+repository does **not** recreate GitHub environment protections; configure them
+before publishing there. The editor exposes activities and uploaded photos, not
+site code, governing PDFs or legal notices. Its schema is not a substitute for
+repository access controls.
+
+Reference: [GitHub deployment approvals](https://docs.github.com/en/actions/how-tos/deploy/configure-and-manage-deployments/review-deployments),
+[environment configuration](https://docs.github.com/en/actions/how-tos/deploy/configure-and-manage-deployments/manage-environments),
+[Pages CMS collaborators](https://pagescms.org/docs/configuration/collaborators/).
 
 ## Source map
 
@@ -57,8 +79,9 @@ Connection documentation: [Pages CMS quick start](https://pagescms.org/docs/quic
 - `templates/`: announcement and event HTML components.
 - `scripts/build.py`: Python standard-library generator, content checks and rich-text sanitisation.
 - `scripts/check_site.py`: generated local links, IDs, language anchors and asset checks.
-- `tests/test_build.py`: independent fixtures for publishing behavior, not real association data.
-- `.github/workflows/publish.yml`: checks every pull request; builds and deploys `main`.
+- `scripts/review.py`: immutable release summary, live baseline comparison, date warnings and stale-release protection.
+- `tests/`: independent fixtures for content generation and review behavior.
+- `.github/workflows/publish.yml`: checks changes; builds main and waits for environment approval before deployment.
 - `style.css`, `site.js`: shared, human-readable styling and navigation.
 - `assets/`: public brand images, uploaded photographs and self-hosted fonts.
 - `documents/`: the four approved association PDFs, used by both languages.

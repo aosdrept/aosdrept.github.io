@@ -39,6 +39,11 @@ class ActivityPublishingTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "title"):
             build.validate(self.entry)
 
+    def test_empty_rich_text_is_not_a_completed_translation(self):
+        self.entry["en"]["body"] = "<p><br></p><p>&nbsp;</p>"
+        with self.assertRaisesRegex(ValueError, "cannot be empty"):
+            build.validate(self.entry)
+
     def test_invalid_date_and_reversed_range_stop_publication(self):
         self.entry["date"] = "2026-02-30"
         with self.assertRaises(ValueError):
@@ -121,7 +126,15 @@ class ActivityPublishingTests(unittest.TestCase):
             second["en"]["title"] = "New project"
             (content / "first-event.json").write_text(json.dumps(self.entry))
             (content / "new-project.json").write_text(json.dumps(second))
+            uploads = root / "assets/uploads"
+            uploads.mkdir(exist_ok=True)
+            (uploads / "unused.jpg").write_bytes(b"draft upload")
+            (uploads / "included.jpg").write_bytes(b"included upload")
+            self.entry["photos"] = [{"image": "/assets/uploads/included.jpg", "alt_ro": "Descriere", "alt_en": "Description"}]
+            (content / "first-event.json").write_text(json.dumps(self.entry))
             build.build(root)
+            self.assertTrue((root / "dist/assets/uploads/included.jpg").exists())
+            self.assertFalse((root / "dist/assets/uploads/unused.jpg").exists())
             for lang, title in (("ro", "Proiect nou"), ("en", "New project")):
                 base = root / "dist" if lang == "ro" else root / "dist/en"
                 self.assertIn(title, (base / "index.html").read_text())

@@ -57,10 +57,11 @@
       <div class="legal-intro">
         <a class="legal-back" href="../">Back to the website</a>
         <p class="eyebrow">FOR THE AOSD TEAM</p>
-        <h1>Publish an event or project</h1>
+        <h1>Prepare, review, publish</h1>
         <p class="legal-lead">
-          Complete one entry for both languages. The website automatically
-          updates the homepage announcement and the activities archive.
+          Members prepare events and projects in the editor. An administrator
+          reviews the proposed version and approves publication. The website
+          stays unchanged until approval.
         </p>
         <a
           class="button dark"
@@ -70,69 +71,125 @@
       </div>
       <div class="legal-content">
         <section id="pasi">
-          <h2>How to publish</h2>
+          <h2>For editors</h2>
           <ol class="editor-steps">
             <li>
               <strong>Open “Evenimente și proiecte”.</strong> Choose “Add an
-              entry” to create an activity, or open an existing entry to edit
-              it.
+              entry” or open an existing activity. Invited members sign in by
+              email and do not need a GitHub account.
             </li>
             <li>
-              <strong>Complete the shared details.</strong> Choose the type and
-              status, the announcement date and any confirmed event dates,
-              deadlines and registration link. Enter times in Romanian local
-              time.
+              <strong>Prepare the content.</strong> For a new activity, save a
+              draft with a Romanian title and “Include în versiunea propusă”
+              switched off. Complete Română and English, dates, links and
+              photographs as you work. Enter times in Romanian local time.
             </li>
             <li>
-              <strong>Complete Română and English.</strong> Add the title,
-              summary and full description. For each photograph, provide a short
-              accessibility description in both languages.
+              <strong>Propose the activity for publication.</strong> Complete
+              both languages, enable “Include în versiunea propusă” (Include in
+              the proposed version), then click “Save”. “Evidențiază pe prima
+              pagină” proposes the homepage announcement; if several are
+              selected, the most recent announcement date wins.
             </li>
             <li>
-              <strong>Review and click “Save”.</strong> Enable “Publică pe site”
-              when the content is ready. “Evidențiază pe prima pagină” selects a
-              featured announcement. If several are selected, the one with the
-              most recent announcement date appears.
-            </li>
-            <li>
-              <strong>Check the result.</strong> Allow the automatic publication
-              to finish, then check both language versions. If your changes do
-              not appear, check publication status below.
+              <strong>Follow the review.</strong> Saving runs automatic checks
+              and prepares a version for the administrator. Correct any errors
+              and save again. A new save replaces a pending review.
             </li>
           </ol>
+          <p>
+            Changes to an already published activity also require approval.
+            Switching off “Include în versiunea propusă” removes it from the
+            website in the next approved release; it does not retain that
+            activity’s previous version on the website.
+          </p>
           <a
             class="text-link"
             href="https://github.com/aosdrept/aosdrept.github.io/actions/workflows/publish.yml"
-            >Publication status</a
+            >Checks and pending releases</a
           >
         </section>
-        <section id="verificare">
-          <h2>Before saving</h2>
+        <section id="aprobare">
+          <h2>For the administrator</h2>
+          <ol class="editor-steps">
+            <li>
+              <strong>Open the latest “Publish website” run.</strong> Sign into
+              GitHub with the designated reviewer account. Initially, this is
+              aosdrept.
+            </li>
+            <li>
+              <strong>Read “Publication review”.</strong> The summary shows
+              changes since the last live version, Romanian and English text for
+              changed activities, and date warnings. Follow the comparison link
+              to review all changes, including images and withdrawals.
+            </li>
+            <li>
+              <strong>Review the whole batch.</strong> Approval covers the
+              entire website version, not one activity. Confirm the facts,
+              translations, organiser approval, image rights and absence of
+              private data.
+            </li>
+            <li>
+              <strong>Approve or reject.</strong> Choose “Review deployments”,
+              select “github-pages”, then “Approve and deploy” or “Reject”. If
+              rejecting, tell the editor what needs correction. A subsequent
+              save requires a new review.
+            </li>
+            <li>
+              <strong>Check the published result.</strong> Once publication
+              finishes, check both language versions. Failed checks or a
+              rejected release leave the previous website online.
+            </li>
+          </ol>
+        </section>
+        <section id="automatizare">
+          <h2>What happens automatically</h2>
           <p>
-            Save only content approved for publication. Saved files and
-            photographs are public on GitHub, including when “Publică pe site”
-            is disabled. Do not upload signatures, private data, membership
-            applications or internal records.
+            Each save checks required information for included activities, date
+            formats and ordering, photograph descriptions, internal links and
+            safe formatting. It prepares the review report and flags past
+            deadlines. Approval is tied to the reviewed version; a superseded
+            version cannot be published.
           </p>
           <p>
-            Choose “Încheiat” (Completed) only once the activity has been
-            confirmed as held. Update both languages for cancellations or
-            changes. “Publică pe site” can hide an activity without deleting the
-            entry.
+            After approval, the website generates both languages, the homepage
+            announcement, and the calendar and archive, sorted by date and
+            grouped by year. Only photographs used by included activities enter
+            the website.
+          </p>
+          <h2>What people review</h2>
+          <p>
+            Editors and the administrator confirm factual accuracy, translation
+            and image-description quality, registration destinations and
+            conditions, photograph permissions and the activity’s actual status.
+            Technical checks do not establish these facts.
+          </p>
+          <p>
+            After an activity takes place, mark it “Încheiat” (Completed). For
+            cancellations, choose “Anulat” and explain in both languages.
+            Passing the date does not change status or close an external form.
+            The announcement date does not schedule publication. Warnings are
+            generated during checks; there are no daily messages or automatic
+            social media posts.
+          </p>
+        </section>
+        <section id="verificare">
+          <h2>Drafts are not confidential</h2>
+          <p>
+            Saved files and photographs are public on GitHub before approval,
+            including when “Include în versiunea propusă” is switched off. Do
+            not save signatures, private data, membership applications or
+            internal records. The draft setting controls inclusion in the
+            website; approval controls publication of the version.
           </p>
         </section>
         <section id="ajutor">
           <h2>Access and help</h2>
           <p>
-            The editor is an external service, separate from the public website.
-            The association administrator manages access and can invite editors.
-            If the website is missing from your account, ask the AOSD team for
-            access.
-          </p>
-          <p>
-            If a check stops publication, the previously published website
-            remains available. Correct the field identified in the error message
-            and save again.
+            The administrator invites editors by email through “Collaborators”
+            in Pages CMS. Only reviewers designated in GitHub’s approval rules
+            can approve publication. Editors do not receive the association’s
+            account password.
           </p>
           <p><a href="mailto:aosdrept@gmail.com">aosdrept@gmail.com</a></p>
         </section>

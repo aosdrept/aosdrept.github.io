@@ -1,4 +1,4 @@
-# Pages CMS: edit approved public content without editing HTML.
+# Pages CMS: prepare public content; GitHub environment approval gates publication.
 media:
   - name: activity_images
     label: Fotografii pentru activități
@@ -30,10 +30,10 @@ content:
         order: desc
     fields:
       - name: visible
-        label: Publică pe site
+        label: Include în versiunea propusă
         type: boolean
         default: false
-        description: "Activează după verificarea ambelor limbi. Atenție: fișierele salvate sunt publice în GitHub chiar dacă această opțiune este oprită. Nu salva date private sau materiale confidențiale."
+        description: "Activează când ambele limbi sunt pregătite pentru verificare. Save pregătește o versiune; numai administratorul o poate aproba în GitHub. Dezactivarea retrage activitatea la următoarea publicare aprobată. Fișierele salvate rămân publice în GitHub; nu salva date private."
       - name: featured
         label: Evidențiază pe prima pagină
         type: boolean
@@ -139,8 +139,7 @@ content:
           - name: summary
             label: Rezumat scurt
             type: text
-            required: true
-            description: Două sau trei propoziții. Apare și în anunțul de pe prima pagină.
+            description: Obligatoriu înainte de propunerea pentru publicare. Două sau trei propoziții; apare și pe prima pagină.
           - name: location
             label: Locul desfășurării (opțional)
             type: string
@@ -148,8 +147,7 @@ content:
           - name: body
             label: Descriere completă
             type: rich-text
-            required: true
-            description: "Include organizatorul, cui se adresează, condițiile de participare și informațiile practice. Adaugă fotografiile în secțiunea dedicată de mai jos."
+            description: "Obligatoriu înainte de propunerea pentru publicare. Include organizatorul, cui se adresează, condițiile de participare și informațiile practice. Adaugă fotografiile în secțiunea dedicată de mai jos."
             options:
               format: html
               switcher: false
@@ -157,24 +155,22 @@ content:
       - name: en
         label: English
         type: object
-        required: true
         fields:
           - name: title
             label: Title
             type: string
-            required: true
+            description: Required before inclusion in the proposed release.
           - name: summary
             label: Short summary
             type: text
-            required: true
-            description: Two or three sentences. Also used in the homepage announcement.
+            description: Required before inclusion in the proposed release. Two or three sentences; also used on the homepage.
           - name: location
             label: Location (optional)
             type: string
           - name: body
             label: Full description
             type: rich-text
-            required: true
+            description: Required before inclusion in the proposed release.
             options:
               format: html
               switcher: false

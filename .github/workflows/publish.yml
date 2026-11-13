@@ -12,36 +12,56 @@ permissions:
 
 concurrency:
   group: pages-${{ github.ref }}
-  cancel-in-progress: false
+  # A changed draft requires a fresh review; never retain an older pending release.
+  cancel-in-progress: true
 
 jobs:
   build:
+    name: Validate and prepare review
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: read
     steps:
       - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
       - name: Test content generation
         run: python3 -m unittest discover -s tests -v
       - name: Build Romanian and English pages
         run: python3 scripts/build.py
       - name: Check generated links and accessibility markup
         run: python3 scripts/check_site.py
+      - name: Prepare administrator review
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python3 scripts/review.py
       - name: Upload website
-        if: github.event_name != 'pull_request'
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         uses: actions/upload-pages-artifact@v4
         with:
           path: dist
 
   deploy:
-    if: github.event_name != 'pull_request'
+    name: Publish after administrator approval
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
     needs: build
     runs-on: ubuntu-latest
     permissions:
+      contents: read
       pages: write
       id-token: write
     environment:
+      # Required reviewer is enforced in GitHub Settings > Environments, not CMS fields.
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+      - uses: actions/checkout@v6
+      - name: Refuse a superseded release
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python3 scripts/review.py --check-current
       - name: Publish to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

@@ -77,6 +77,7 @@ class RichText(HTMLParser):
         super().__init__(convert_charrefs=True)
         self.output = []
         self.stack = []
+        self.has_text = False
 
     def handle_starttag(self, tag, attrs):
         if re.fullmatch(r"h[1-6]", tag):
@@ -108,15 +109,18 @@ class RichText(HTMLParser):
             self.handle_endtag(tag)
 
     def handle_data(self, data):
+        self.has_text = self.has_text or bool(data.strip())
         self.output.append(text(data))
 
 
-def rich_text(value):
+def rich_text(value, require_text=False):
     parser = RichText()
     parser.feed(value or "")
     parser.close()
     if parser.stack:
         raise ValueError("Textul formatat are un element HTML neînchis.")
+    if require_text and not parser.has_text:
+        raise ValueError("Descrierea completă nu poate fi goală / Full description cannot be empty.")
     return "".join(parser.output)
 
 
@@ -173,7 +177,7 @@ def validate(entry, root=ROOT):
             raise ValueError(f"Completează secțiunea {lang}.")
         required_string(translation, "title")
         required_string(translation, "summary")
-        rich_text(required_string(translation, "body"))
+        rich_text(required_string(translation, "body"), require_text=True)
     for deadline in entry.get("deadlines") or []:
         parse_date(required_string(deadline, "date"), True)
         for lang in LANGUAGES:
@@ -289,8 +293,15 @@ def build(root=ROOT, destination=None):
     if destination.exists():
         shutil.rmtree(destination)
     shutil.copytree(root / "pages", destination)
-    for folder in ("assets", "documents"):
-        shutil.copytree(root / folder, destination / folder)
+    shutil.copytree(root / "documents", destination / "documents")
+    shutil.copytree(root / "assets", destination / "assets", ignore=shutil.ignore_patterns("uploads"))
+    # Unused/draft uploads remain in GitHub, but do not enter the public site.
+    for entry in entries:
+        for photo in entry.get("photos") or []:
+            relative = photo["image"].lstrip("/")
+            target = destination / relative
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(root / relative, target)
     for file in ("style.css", "site.js", "COPYRIGHT.txt"):
         shutil.copy2(root / file, destination / file)
     featured = featured_entry(entries)
