@@ -54,14 +54,54 @@ def text(value):
 
 
 def safe_url(value, allow_email=False):
-    if not isinstance(value, str) or re.search(r"[\s\x00-\x1f]", value):
+    if not isinstance(value, str) or re.search(r"[\s\x00-\x1f\x7f\\]", value):
         raise ValueError("Linkurile nu pot conține spații sau caractere de control.")
     url = urlsplit(value)
-    if url.scheme in ("https", "http") and url.netloc and not url.username and not url.password:
+    if url.scheme == "https" and url.hostname and not url.username and not url.password:
+        url.port  # Reject malformed port numbers as well as malformed hosts.
         return value
     if allow_email and url.scheme == "mailto" and url.path and "@" in url.path:
         return value
     raise ValueError("Folosește un link complet care începe cu https://.")
+
+
+def upload_path(value):
+    """Accept only the local, slugified paths written by our media configuration.
+
+    Do not strip arbitrary leading slashes: //host/path means an external host
+    in a browser, even when pathlib interprets it as a local build input.
+    """
+    pattern = r"/assets/uploads/(?:[A-Za-z0-9_-][A-Za-z0-9._-]*/)*[A-Za-z0-9_-][A-Za-z0-9._-]*\.(?:jpg|jpeg|png|webp)"
+    if not isinstance(value, str) or not re.fullmatch(pattern, value, re.IGNORECASE):
+        raise ValueError("Reîncarcă fotografia prin editor / Upload the photograph through the editor.")
+    return value[1:]
+
+
+def validate_photo(value, root):
+    relative = upload_path(value)
+    image = root / relative
+    resolved = image.resolve()
+    upload_root = (root.resolve() / "assets/uploads")
+    if not resolved.is_relative_to(upload_root) or resolved != root.resolve() / relative or not image.is_file():
+        raise ValueError("Fotografia trebuie să fie un fișier local, fără legături simbolice / Photograph must be a local file, without symlinks.")
+    if image.stat().st_size > 10 * 1024 * 1024:
+        raise ValueError("Fotografia depășește 10 MB / Photograph exceeds 10 MB.")
+    with image.open("rb") as source:
+        header = source.read(12)
+    extension = image.suffix.lower()
+    matches = ((extension in (".jpg", ".jpeg") and header.startswith(b"\xff\xd8\xff"))
+               or (extension == ".png" and header.startswith(b"\x89PNG\r\n\x1a\n"))
+               or (extension == ".webp" and header.startswith(b"RIFF") and header[8:12] == b"WEBP"))
+    if not matches:
+        raise ValueError("Fișierul nu are semnătura formatului foto indicat / File does not match its image format.")
+
+
+def reject_public_symlinks(root):
+    """Never dereference repository symlinks into a deployment artifact."""
+    for name in ("pages", "assets", "documents", "content/activities"):
+        directory = root / name
+        if directory.is_symlink() or any(path.is_symlink() for path in directory.rglob("*")):
+            raise ValueError(f"Legăturile simbolice nu sunt acceptate / Symlinks are not allowed: {name}")
 
 
 class RichText(HTMLParser):
@@ -182,17 +222,18 @@ def validate(entry, root=ROOT):
         parse_date(required_string(deadline, "date"), True)
         for lang in LANGUAGES:
             required_string(deadline, "label_" + lang)
-    for photo in entry.get("photos") or []:
+    photos = entry.get("photos") or []
+    if not isinstance(photos, list) or len(photos) > 6:
+        raise ValueError("Sunt permise cel mult 6 fotografii / Maximum 6 photographs.")
+    for photo in photos:
         path = required_string(photo, "image")
-        image = (root / path.lstrip("/")).resolve()
-        upload_root = (root / "assets/uploads").resolve()
-        if not image.is_relative_to(upload_root) or image.suffix.lower() not in (".jpg", ".jpeg", ".png", ".webp") or not image.is_file():
-            raise ValueError("Fotografia trebuie încărcată în directorul de imagini al editorului.")
+        validate_photo(path, root)
         for lang in LANGUAGES:
             required_string(photo, "alt_" + lang)
 
 
 def load_entries(root=ROOT):
+    reject_public_symlinks(root)
     entries = []
     for path in sorted((root / "content/activities").glob("*.json")):
         try:
@@ -298,7 +339,7 @@ def build(root=ROOT, destination=None):
     # Unused/draft uploads remain in GitHub, but do not enter the public site.
     for entry in entries:
         for photo in entry.get("photos") or []:
-            relative = photo["image"].lstrip("/")
+            relative = upload_path(photo["image"])
             target = destination / relative
             target.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(root / relative, target)

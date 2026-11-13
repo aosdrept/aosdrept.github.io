@@ -177,7 +177,7 @@ content:
               media: false
       - name: photos
         label: Fotografii (opțional)
-        description: "Încarcă numai imagini aprobate pentru publicare, fără date private sau semnături. Recomandat: maximum 2 MB pe fotografie."
+        description: "Încarcă numai imagini aprobate pentru publicare, fără date private sau semnături. Recomandat: maximum 2 MB pe fotografie; limită acceptată 10 MB."
         type: object
         list:
           max: 6

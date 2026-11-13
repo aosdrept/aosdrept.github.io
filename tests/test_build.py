@@ -94,7 +94,7 @@ class ActivityPublishingTests(unittest.TestCase):
             root = Path(folder)
             images = root / "assets/uploads"
             images.mkdir(parents=True)
-            (images / "photo.jpg").write_bytes(b"fixture")
+            (images / "photo.jpg").write_bytes(b"\xff\xd8\xff" + b"fixture")
             self.entry["photos"] = [{"image": "/assets/uploads/photo.jpg", "alt_ro": "Descriere"}]
             with self.assertRaisesRegex(ValueError, "alt_en"):
                 build.validate(self.entry, root)
@@ -129,7 +129,7 @@ class ActivityPublishingTests(unittest.TestCase):
             uploads = root / "assets/uploads"
             uploads.mkdir(exist_ok=True)
             (uploads / "unused.jpg").write_bytes(b"draft upload")
-            (uploads / "included.jpg").write_bytes(b"included upload")
+            (uploads / "included.jpg").write_bytes(b"\xff\xd8\xff" + b"included upload")
             self.entry["photos"] = [{"image": "/assets/uploads/included.jpg", "alt_ro": "Descriere", "alt_en": "Description"}]
             (content / "first-event.json").write_text(json.dumps(self.entry))
             build.build(root)

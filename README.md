@@ -112,6 +112,30 @@ copies. Shared section IDs preserve the current section when switching languages
 The navigation breakpoint is `70rem` in both CSS and JS. Preserve visible focus,
 usable touch targets, the skip link, reduced-motion support and no-JS navigation.
 
+## Security maintenance
+
+Every HTML page sets a Content Security Policy and a `no-referrer` policy.
+Scripts, styles, fonts and images load from this site; inline scripts, embeds,
+forms and background connections are blocked. Keep these policies before other
+resources in the page head. The generated-site check rejects missing policies,
+inline code and unexpected scripts. Revisit the policy deliberately if adding
+new features; do not enable `unsafe-inline` to silence an error.
+
+Editor links must use HTTPS (rich text may also contain email links). Photos must
+use the editor's local upload paths, with at most six images per activity and
+10 MB per image. The build rejects symlinks and checks JPEG, PNG or WebP file
+signatures. These checks are not a full image decoder or malware scan. Review
+image content and permissions before approval, and keep browsers up to date.
+
+GitHub Actions are pinned to full commit hashes. When updating an action, verify
+the new commit against its official repository and release, update the adjacent
+version comment, and run the checks before approving deployment. Workflow tokens
+have job-specific permissions; checkout does not retain credentials.
+
+The HTML policy does not control who may frame the site: `frame-ancestors` needs
+an HTTP response header. Other response headers are managed by GitHub Pages,
+not these static files. Do not add ineffective HTML substitutes for headers.
+
 ## Documents, collaborators and rights
 
 Replace a public PDF only after its association master has been approved and
