@@ -22,6 +22,8 @@ There is no framework, build step or runtime dependency. Edit the HTML, CSS and
 JavaScript directly. Use two-space indentation and keep the existing formatting.
 Update the Romanian and English pages together; corresponding sections use the
 same IDs so language switching preserves the current section.
+The official social links appear in the opening section and in Contact; keep
+both locations in both languages in sync when a profile address changes.
 
 Content and navigation work without JavaScript. The mobile menu uses a disclosure
 button, not an application-style ARIA menu. Its breakpoint is `70rem` in both

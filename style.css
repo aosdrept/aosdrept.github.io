@@ -355,6 +355,40 @@ summary:focus-visible {
   line-height: 1.75;
   margin-bottom: 1.875rem;
 }
+/* Official social channels are the homepage's route to current announcements. */
+.hero-updates {
+  max-width: 30.625rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #ffffff40;
+}
+.hero-updates > p {
+  margin-bottom: 0.75rem;
+  color: #e1d9e8;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+.hero-updates .social-links a {
+  justify-content: center;
+  min-width: 8rem;
+  max-width: 100%;
+  background: var(--lilac);
+  color: var(--ink);
+  border-color: var(--lilac);
+  font-weight: 600;
+}
+.hero-updates .social-links a:hover {
+  background: white;
+  border-color: white;
+}
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.5rem;
+  margin-top: 1.25rem;
+}
+.hero-actions .text-link {
+  margin-top: 0;
+}
 .hero-art {
   background:
     linear-gradient(#35244240, #35244270),
